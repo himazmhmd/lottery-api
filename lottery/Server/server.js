@@ -11,6 +11,7 @@ import compression from 'compression';
 import fs from 'fs';
 
 import cors from 'cors';
+import userRoute from './routes/User.js';
 import dotenv from "dotenv";
 
 // import { mailRoute } from './routes/routes.js'
@@ -24,14 +25,6 @@ dotenv.config();
 const app = express();
 
 
-// FORWARDING TO HTTPS
-// app.use((req, res, next) => {
-//     if (req.protocol === 'http') {
-//         console.log("FOWARDING TO HTTPS: current protocol: " + req.protocol)
-//         res.redirect(301, `https://${req.headers.host}${req.url}`);
-//     }
-//     next();
-// });
 
 
 
@@ -39,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
 
+app.use("/usr", userRoute);
 
 // Setting port
 const devPort = process.env.PORT || 5000;
@@ -48,11 +42,18 @@ const host = process.env.HOST || "0.0.0.0"
 const environment = "production"
 
 
+
+
 // Compression
 app.use(compression())
 
 // Body parsing middleware; Set max file size to 10mb
 app.use(express.json({ limit: '1mb' }));
+// app.use(express.urlencoded({ limit: '10mb' }));
+
+
+// Routing config
+// mailRoute(app)
 
 
 
